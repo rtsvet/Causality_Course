@@ -4,15 +4,19 @@
 #install packages
 install.packages("tableone")
 install.packages("Matching")
+install.packages("MatchIt")
 
 #load packages
 library(tableone)
 library(Matching)
+library(MatchIt) 
+library(skimr)
 
 #read in data https://biostat.app.vumc.org/wiki/Main/DataSets
 load(url("https://biostat.app.vumc.org/wiki/pub/Main/DataSets/rhc.sav"))
 #view data
 View(rhc)
+skim_without_charts(rhc)
 
 #treatment variables is swang1
 #x variables that we will use
@@ -41,6 +45,7 @@ meanbp1<-rhc$meanbp1
 mydata<-cbind(ARF,CHF,Cirr,colcan,Coma,lungcan,MOSF,sepsis,
               age,female,meanbp1,treatment,died)
 mydata<-data.frame(mydata)
+skim_without_charts(mydata)
 
 #covariates we will use (shorter list than you would use in practice)
 xvars<-c("ARF","CHF","Cirr","colcan","Coma","lungcan","MOSF","sepsis",
@@ -83,7 +88,7 @@ mcnemar.test(matrix(c(973,513,395,303),2,2))
 
 ##########################
 #propensity score matching
-#########################
+##########################
 
 #fit a propensity score model. logistic regression
 
