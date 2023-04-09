@@ -36,3 +36,36 @@ mydata<-cbind(ARF,CHF,Cirr,colcan,Coma,lungcan,MOSF,sepsis,
               age,female,meanbp1,treatment,died)
 mydata<-data.frame(mydata)
 skim_without_charts(mydata)
+
+##########################
+#propensity score matching
+##########################
+
+#fit a propensity score model. logistic regression
+
+
+psmodel <- glm(
+  treatment ~ age + female + meanbp1 + ARF + CHF + Cirr + colcan + Coma + 
+    lungcan + MOSF + sepsis,
+    family = binomial(link = "logit"),
+    data = mydata
+)
+
+#show coefficients etc
+summary(psmodel)
+
+## value of propensity score for each subject
+ps <- predict(psmodel, type = "response")
+# or use
+#create propensity score
+pscore<-psmodel$fitted.values
+
+# create weights
+weight <- ifelse(treatment == 1, 1/(ps), 1/(1-ps))
+
+# apply weight to data
+weight.and.data <- svydesign(ids = ~1, data = mydata, weights = ~ weight)
+
+#weighted table 1
+weightedtable <- svyCreateTableOne(vars = xvars, strdata = "treatment", 
+                                   data = weight.and.data, test = FALSE)
