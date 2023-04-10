@@ -86,8 +86,11 @@ print(weightedtable, smd = TRUE)
 #to get a weighted mean for a single covariate directly:
 mean(weight[treatment==1]*age[treatment==1])/(mean(weight[treatment==1]))
 
+
 #get causal risk difference
 glm.obj<-glm(died~treatment,weights=weight,family=quasibinomial(link="identity"))
+# or 
+glm.obj<-glm(died~treatment,weights=weight,family=binomial(link="identity"))
 #summary(glm.obj)
 betaiptw<-coef(glm.obj)
 SE<-sqrt(diag(vcovHC(glm.obj, type="HC0")))
@@ -97,18 +100,23 @@ lcl<-(betaiptw[2]-1.96*SE[2])
 ucl<-(betaiptw[2]+1.96*SE[2])
 c(lcl,causalrd,ucl)
 
+# use the log  to get the relative causal risk difference
 #get causal relative risk. Weighted GLM
-glm.obj<-glm(died~treatment,weights=weight,family=quasibinomial(link=log))
+glm.obj<-glm(died ~ treatment, weights = weight,family = quasibinomial(link=log))
+# or
+glm.obj<-glm(died ~ treatment, weights = weight,family = binomial(link=log))
+
 #summary(glm.obj)
 betaiptw<-coef(glm.obj)
 #to properly account for weighting, use asymptotic (sandwich) variance
 SE<-sqrt(diag(vcovHC(glm.obj, type="HC0")))
 
-#get point estimate and CI for relative risk (need to exponentiate)
+#get point estimate and CI for relative risk (need exponentiation)
 causalrr<-exp(betaiptw[2])
-lcl<-exp(betaiptw[2]-1.96*SE[2])
-ucl<-exp(betaiptw[2]+1.96*SE[2])
+lcl<-exp(betaiptw[2]-1.96*SE[2]) # lower confidence limit
+ucl<-exp(betaiptw[2]+1.96*SE[2]) # upper confidence limit
 c(lcl,causalrr,ucl)
+
 
 #truncate weights at 10
 
