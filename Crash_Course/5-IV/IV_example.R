@@ -2,16 +2,21 @@
 
 
 #install package
-install.packages("ivpack")
+#install.packages("ivpack")
+install.packages("AER")
 #load package
-library(ivpack)
+#library(ivpack)
+library(AER)
+library(skimr)
 
 #read dataset
-data(card.data)
+#data(card.data)
+load("./Crash_Course/5-IV/card.data.rda")
 
-#IV is nearc4 (near 4 year college)
-#outcome is lwage (log of wage)
-#'treatment' is educ (number of years of education)
+# IV is nearc4 (near 4 year college)
+# Y outcome is lwage (log of wage)
+#'A treatment' is educ (number of years of education)
+# X - covariates as educ12 + exper + reg661 + reg662 + reg663 + reg664 + reg665+ reg666 + reg667 + reg668
 
 #summary stats
 mean(card.data$nearc4)
@@ -23,16 +28,24 @@ hist(card.data$educ)
 mean(card.data$educ[card.data$nearc4==1])
 mean(card.data$educ[card.data$nearc4==0])
 
+boxplot(card.data$educ, card.data$nearc4)
 
 #make education binary
 educ12<-card.data$educ>12
 #estimate proportion of 'compliers'
-propcomp<-mean(educ12[card.data$nearc4==1])-
-  mean(educ12[card.data$nearc4==0])
+# to estimate the strength of the IV
+# sum(educ12[card.data$nearc4==1])/n
+propcomp <- mean(educ12[card.data$nearc4==1]) - mean(educ12[card.data$nearc4==0])
 propcomp
+# sum(educ12[card.data$nearc4==1])/length(card.data$nearc4[card.data$nearc4 == 1]) -
+# sum(educ12[card.data$nearc4==0])/length(card.data$nearc4[card.data$nearc4 == 0])
+# sum of all with education which are near
+# minus
+# all with education being far (non compliers)
+# 0.12 which is not that week
 
 #intention to treat effect
-itt<-mean(card.data$lwage[card.data$nearc4==1])-
+itt <- mean(card.data$lwage[card.data$nearc4==1])-
   mean(card.data$lwage[card.data$nearc4==0])
 itt
 
@@ -51,9 +64,14 @@ table(predtx)
 #stage 2: regress Y on predicted value of A
 lm(card.data$lwage~predtx)
 
+# 2SLS using AER
+
+
 
 #2SLS using ivpack
 ivmodel=ivreg(lwage ~ educ12, ~ nearc4, x=TRUE, data=card.data)
+ivmodel
+summary(ivmodel)
 robust.se(ivmodel)
 
 
@@ -62,3 +80,5 @@ ivmodel=ivreg(lwage ~ educ12 + exper + reg661 + reg662 +
               ~ nearc4 + exper +
                 reg661+ reg662 + reg663 + reg664 + reg665 + reg666 +
                 reg667 + reg668, x=TRUE, data=card.data)
+ivmodel
+summary(ivmodel)
