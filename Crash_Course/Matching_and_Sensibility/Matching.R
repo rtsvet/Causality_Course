@@ -6,6 +6,10 @@ install.packages("tableone")
 install.packages("Matching")
 install.packages("MatchIt")
 
+# https://cran.r-project.org/web/packages/PSAgraphics/PSAgraphics.pdf
+# https://www.jstatsoft.org/article/view/v029i06
+install.packages("PSAgraphics")
+
 #load packages
 library(tableone)
 library(Matching)

@@ -66,7 +66,7 @@ lm(card.data$lwage~predtx)
 
 # 2SLS using AER
 
-
+# https://rpubs.com/wsundstrom/t_ivreg
 
 #2SLS using ivpack
 ivmodel=ivreg(lwage ~ educ12, ~ nearc4, x=TRUE, data=card.data)
