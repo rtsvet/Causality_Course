@@ -7,7 +7,9 @@
 ##########################################################################
 
 # Install and load required packages
-install.packages("tidyverse")
+
+# sudo apt-get install libv8-dev
+install.packages("V8")
 install.packages("dagitty")
 install.packages("ggdag")
 
@@ -28,9 +30,9 @@ df <- data.frame(talent, looks)
 df %>% summarize(correlation = cor(talent, looks))
 
 # Create a third variable "job", which is equal to one if the sum
-# of talent and looks is above the 75th percentile in the population
+# of talent and looks is above the 80th percentile in the population
 x <- talent + looks
-job <- 1*(x > quantile(x, c(.75)))
+job <- 1*(x > quantile(x, c(.80)))
 df <- cbind(df, job)
 
 df %>% filter(job == 1) %>% summarize(correlation = cor(talent, looks))
