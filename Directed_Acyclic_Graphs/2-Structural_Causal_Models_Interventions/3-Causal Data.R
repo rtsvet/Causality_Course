@@ -19,6 +19,10 @@ library(pcalg)
 library(dagitty)
 library(ggdag)
 
+library(graph)
+library(RBGL)
+
+
 ############################################
 ##### Testable implications of graphs ######
 ############################################
@@ -80,6 +84,8 @@ gaussCItest(2, 5, NULL, suffStat_gauss)
 # We can autmatically find the skeleton using the "pcalg" package
 skeleton <- skeleton(suffStat_gauss, indepTest = gaussCItest, labels = colnames(df), alpha = 0.01)
 Rgraphviz::plot(skeleton)
+
+plot(skeleton)
 
 ### Orient the edges
 

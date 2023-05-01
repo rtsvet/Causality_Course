@@ -37,6 +37,26 @@ df <- cbind(df, job)
 
 df %>% filter(job == 1) %>% summarize(correlation = cor(talent, looks))
 
+# My exp Fork A <- B -> C
+b <- rnorm(1000)
+e_a <- 0.3*rnorm(1000)
+a <- b + e_a
+e_c <- 0.3*rnorm(1000)
+c <- b + e_c
+
+df <- data.frame(a, b, c)
+
+# lets test if A and C are corelated
+cor(a,c)
+# no correlation it's 0.09
+
+# if we condition on B
+# there should be correlation
+
+
+df %>% filter(b > 0.2, b < 0.3) %>%summarize(correlation = cor(a,c))
+
+
 #############################################
 ### "Correlation doesn't imply causation" ###
 #############################################
