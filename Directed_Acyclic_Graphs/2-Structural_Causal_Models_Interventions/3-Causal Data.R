@@ -12,6 +12,7 @@ if (!requireNamespace("BiocManager", quietly = TRUE))
    install.packages("BiocManager")
 BiocManager::install("RBGL")
 BiocManager::install("graph")
+BiocManager::install("Rgraphviz")
 
 install.packages("pcalg")
 
@@ -85,7 +86,7 @@ gaussCItest(2, 5, NULL, suffStat_gauss)
 skeleton <- skeleton(suffStat_gauss, indepTest = gaussCItest, labels = colnames(df), alpha = 0.01)
 Rgraphviz::plot(skeleton)
 
-plot(skeleton)
+
 
 ### Orient the edges
 
