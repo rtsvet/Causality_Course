@@ -13,9 +13,9 @@ library(ggdag)
 
 # In this section, we will work with three new packages that we have to 
 # install first using the following commands
-install.packages("causaleffect")
-install.packages("igraph")
-install.packages("latex2exp")
+#install.packages("causaleffect")
+#install.packages("igraph")
+#install.packages("latex2exp")
 
 library(causaleffect)
 library(igraph)
@@ -118,6 +118,9 @@ dag2 <- graph.formula(y +- z5, y +- z6, y +- z1,
 # adjustment set), otherwise and error is thrown
 ce_backdoor <- causal.effect(y = "y", x = "x", z = NULL, G = dag2, expr = TRUE)
 plot(TeX(ce_backdoor), cex=2)
+# or just
+ce_backdoor
+TeX(ce_backdoor)
 
 # Now let's pretend we are not able to measure Z1. The following command sets Z1 and 
 # its links with the other variables in the model to "unobserved". As we see, it's
@@ -212,3 +215,4 @@ mean(y[x==1])
 # Z-identifiability adjustment formula
 mean(y_doz[w_doz==1 & x_doz==1]) * mean(w_doz==1) +
          mean(y_doz[w_doz==0 & x_doz==1]) * mean(w_doz==0)
+
