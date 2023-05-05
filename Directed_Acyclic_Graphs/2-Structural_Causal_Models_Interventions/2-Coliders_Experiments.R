@@ -9,6 +9,7 @@
 # Install and load required packages
 
 # sudo apt-get install libv8-dev
+Sys.setenv(DOWNLOAD_STATIC_LIBV8=1)
 install.packages("V8")
 install.packages("dagitty")
 install.packages("ggdag")
