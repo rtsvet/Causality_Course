@@ -211,7 +211,10 @@ df <- data.frame(w, x, y, z, y_dox, w_doz, x_doz, y_doz)
 # P(y|do(x=1))
 mean(y_dox)
 # P(y|x=1)
-mean(y[x==1])
+mean(y[x==1]) 
+# just naively looking at the correlation. 
+# And as expected it is off from P(y|do(x=1))
+
 # Z-identifiability adjustment formula
 mean(y_doz[w_doz==1 & x_doz==1]) * mean(w_doz==1) +
          mean(y_doz[w_doz==0 & x_doz==1]) * mean(w_doz==0)
