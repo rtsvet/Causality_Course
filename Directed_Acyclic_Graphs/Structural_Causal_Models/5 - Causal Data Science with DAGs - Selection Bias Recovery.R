@@ -21,9 +21,12 @@ dag <- graph.formula(w -+ s, w -+ x, w -+ z,
 # The bidirected edge between Z and Y is unobserved
 dag <- set.edge.attribute(dag, "description", 6:7, "U")
 
+plot(dag)
+
 # Declare node s as selection node (you can find the index
 # of s in the graph by using the command "V(dag)")
 dag <- set.vertex.attribute(dag, "description", 2, "S")
+V(dag)
 
 # Apply algorithm by Bareinboim and Tian (2015) for identification
 # with selection-biased data implemented in the recover() function
