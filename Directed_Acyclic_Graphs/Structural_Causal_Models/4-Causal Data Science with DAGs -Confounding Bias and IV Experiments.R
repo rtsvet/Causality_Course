@@ -98,11 +98,21 @@ y_weighted <- y / weight
 # n^-1 * sum_n Y*1(x==1) / weight
 sum(y_weighted[x==1]) / 10000
 
+# my stuff ################
+dag <- graph.formula(y +- x, y +- z, x +- z)
+plot(dag)
+ce <- causal.effect(y = "y", x = "x", G = dag)
+plot(TeX(ce), cex=2)
+
+
 ##############################################################
 ##### Frontdoor adjustment and identification algorithms #####
 ##############################################################
 # To illustrate frontdoor adjustment we switch to the R package "causaleffect", which
 # uses different syntax than "dagitty" to initialize DAGs 
+
+#  once can use library(SEMgraph) to and  dagitty2graph(..) or graph2dagity(..) to convert between
+
 dag2 <- graph.formula(y +- z5, y +- z6, y +- z1,
                       z6 +- x,
                       z5 +- z4,
@@ -175,6 +185,7 @@ dag5 <- graph.formula(w -+ z, z -+ x, x -+ y, w -+ y,
                       w -+ y, y -+ w, z -+ y, y -+ z, z -+ x, x -+ z, 
                       simplify = FALSE)
 dag5 <- set.edge.attribute(dag5, "description", 5:10, "U")
+plot(dag5)
 
 # P(y|do(X)) is not identifiable in the normal graph (i.e., in non-experimental data)
 causal.effect(y = "y", x = "x", G = dag5)
@@ -183,7 +194,7 @@ causal.effect(y = "y", x = "x", G = dag5)
 # aux.effect() function implements z-identification algorithm by Bareinboim
 # and Pearl (2012)
 ce_aux <- aux.effect(y = "y", x = "x", z = "z", G = dag5)
-plot(TeX(ce_aux), cex=3)
+plot(TeX(ce_aux), cex=2)
 
 ##### Numerical Example #####
 
