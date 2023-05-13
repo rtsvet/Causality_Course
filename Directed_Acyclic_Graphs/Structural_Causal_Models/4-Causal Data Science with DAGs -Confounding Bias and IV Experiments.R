@@ -127,7 +127,7 @@ dag2 <- graph.formula(y +- z5, y +- z6, y +- z1,
 # (note however, that the algorithm doesn't necessarily return a minimum sufficient 
 # adjustment set), otherwise and error is thrown
 ce_backdoor <- causal.effect(y = "y", x = "x", z = NULL, G = dag2, expr = TRUE)
-plot(TeX(ce_backdoor), cex=2)
+plot(TeX(ce_backdoor), cex=1)
 # or just
 ce_backdoor
 TeX(ce_backdoor)
